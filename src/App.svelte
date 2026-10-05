@@ -39,9 +39,9 @@ const cover=[{name:'Pangeo',description:'High-end Brigade Road lounge blending g
 let active='visited';
 const tabs=[['visited','Visited',visited.length],['bucket','Bucket list',bucket.length],['cover','Need cover charge',cover.length]];
 </script>
-<svelte:head><title>Blore Lore — Bengaluru trail</title></svelte:head>
+<svelte:head><title>B'lore Lore — Bengaluru trail</title></svelte:head>
 <div class="top-banner"><span>Tawan</span><a href="mailto:tawanjsingh@gmail.com">tawanjsingh@gmail.com</a></div>
-<section class="hero"><img src={heroImage} alt="Blore Lore header" /><div class="hero-overlay"></div><div class="hero-title"><div class="eyebrow">BENGALURU · PERSONAL INDEX</div><h1>Blore <span>Lore.</span></h1><p class="intro">Places worth remembering, places still calling, and places that made entry complicated.</p></div></section>
+<section class="hero"><img src={heroImage} alt="Blore Lore header" /><div class="hero-overlay"></div><div class="hero-title"><div class="eyebrow">BENGALURU</div><h1>B'lore <span>Lore.</span></h1><p class="intro">Places worth remembering, places still calling, and places that made entry complicated.</p></div></section>
 <div class="shell">
 <header class="stats-only"><div class="stats"><div><strong>{visited.length}</strong><span>visited</span></div><div><strong>{bucket.length}</strong><span>to go</span></div><div><strong>{cover.length}</strong><span>caution</span></div></div></header>
 <nav>{#each tabs as t}<button class:active={active===t[0]} onclick={()=>active=t[0]}><span>{t[1]}</span><small>{t[2]}</small></button>{/each}</nav>
