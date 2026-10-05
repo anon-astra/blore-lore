@@ -1,5 +1,6 @@
 <script>
 import heroImage from './vX2cDW8LUWk-HD.jpg';
+import heroImage from './vX2cDW8LUWk-HD.jpg';
 const visited=[
 ['Roxie & Barry','Italian-led restaurant and bar with European plates, cocktails and a polished Whitefield setting.'],
 ['Tall Oaks','Nature-inspired, pet-friendly dining with lush open spaces and a resort-like feel.'],
@@ -41,8 +42,9 @@ const tabs=[['visited','Visited',visited.length],['bucket','Bucket list',bucket.
 </script>
 <svelte:head><title>Blore Lore — Bengaluru trail</title></svelte:head>
 <div class="top-banner"><span>Tawan</span><a href="mailto:tawanjsingh@gmail.com">tawanjsingh@gmail.com</a></div>
+<section class="hero"><img src={heroImage} alt="Blore Lore header" /><div class="hero-overlay"></div><div class="hero-title"><div class="eyebrow">BENGALURU · PERSONAL INDEX</div><h1>Blore <span>Lore.</span></h1><p class="intro">Places worth remembering, places still calling, and places that made entry complicated.</p></div></section>
 <div class="shell">
-<header><div class="eyebrow">BENGALURU · PERSONAL INDEX</div><h1>Blore <span>Lore.</span></h1><p class="intro">Places worth remembering, places still calling, and places that made entry complicated.</p><div class="stats"><div><strong>{visited.length}</strong><span>visited</span></div><div><strong>{bucket.length}</strong><span>to go</span></div><div><strong>{cover.length}</strong><span>caution</span></div></div></header>
+<header class="stats-only"><div class="stats"><div><strong>{visited.length}</strong><span>visited</span></div><div><strong>{bucket.length}</strong><span>to go</span></div><div><strong>{cover.length}</strong><span>caution</span></div></div></header>
 <nav>{#each tabs as t}<button class:active={active===t[0]} onclick={()=>active=t[0]}><span>{t[1]}</span><small>{t[2]}</small></button>{/each}</nav>
 <main>
 {#if active==='visited'}<div class="section-head"><div><span class="kicker">VISITED</span><h2>Been there.</h2></div><p>Tawan's picks, in order.</p></div><div class="rank-list">{#each visited as p}<article class:podium={p.rank<=3}><div class="rank">#{p.rank}</div><div class="place"><h3>{p.name}</h3><span>{p.description}</span></div>{#if p.rank===1}<div class="badge">TOP PICK</div>{/if}</article>{/each}</div>
