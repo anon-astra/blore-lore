@@ -1,6 +1,5 @@
 <script>
 import heroImage from './vX2cDW8LUWk-HD.jpg';
-import heroImage from './vX2cDW8LUWk-HD.jpg';
 const visited=[
 ['Roxie & Barry','Italian-led restaurant and bar with European plates, cocktails and a polished Whitefield setting.'],
 ['Tall Oaks','Nature-inspired, pet-friendly dining with lush open spaces and a resort-like feel.'],
