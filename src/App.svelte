@@ -1,4 +1,5 @@
 <script>
+import heroImage from './vX2cDW8LUWk-HD.jpg';
 const visited=[
 ['Roxie & Barry','Italian-led restaurant and bar with European plates, cocktails and a polished Whitefield setting.'],
 ['Tall Oaks','Nature-inspired, pet-friendly dining with lush open spaces and a resort-like feel.'],
@@ -33,7 +34,7 @@ const bucket=[
 ['Suka Brew and Kitchen','Nagarbhavi rooftop and waterfront-style lounge with a broad Indian and Asian-leaning menu.'],
 ['Paros — Brewery & Kitchen','Aegean-inspired rooftop brewery pairing small-batch beer, global food and sunset-friendly spaces.'],
 ['Oia Bangalore','Santorini-inspired mega-pub with dramatic architecture, open-air spaces, beer and live entertainment.']
-].map(([name,description])=>({name,description}));
+].map(([name,description])=>({name,description})).sort((a,b)=>a.name.localeCompare(b.name, 'en', {sensitivity:'base'}));
 const cover=[{name:'Pangeo',description:'High-end Brigade Road lounge blending global dining, cocktails and high-energy nightlife.',note:'Cover charge requested for a solo visit despite the listing showing free entry.'}];
 let active='visited';
 const tabs=[['visited','Visited',visited.length],['bucket','Bucket list',bucket.length],['cover','Need cover charge',cover.length]];
