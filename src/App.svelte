@@ -1,5 +1,146 @@
 <script>
 import heroImage from './vX2cDW8LUWk-HD.jpg';
+const pricing={
+  "Tall Oaks": {
+    "costForTwo": 1300,
+    "source": "https://www.swiggy.com/restaurants/bangalore/kadugodi/tall-oaks-910968/dineout",
+    "checkedAt": "2026-10-06"
+  },
+  "Mykos Craft Kitchen & Bar": {
+    "costForTwo": 1600,
+    "source": "https://www.swiggy.com/restaurants/bangalore/bannerghatta-road/mykos-craft-kitchen-bar-815640/dineout",
+    "checkedAt": "2026-10-06"
+  },
+  "Tropika Brewing Co": {
+    "costForTwo": 1600,
+    "source": "https://www.swiggy.com/dineout/bangalore/marathahalli/multi-cuisine-restaurants",
+    "checkedAt": "2026-10-06"
+  },
+  "Koko Samba": {
+    "costForTwo": 2500,
+    "source": "https://www.swiggy.com/city/bangalore/best-restaurants-in-kundalahalli",
+    "checkedAt": "2026-10-06"
+  },
+  "Helen's Place — Marathahalli": {
+    "costForTwo": 1500,
+    "source": "https://www.swiggy.com/dineout/bangalore/marathahalli/continental-restaurants",
+    "checkedAt": "2026-10-06"
+  },
+  "Beige Bangalore": {
+    "costForTwo": 2500,
+    "source": "https://www.swiggy.com/city/bangalore/marathahalli-restaurants/smoking-area-feature-restaurants-dineout",
+    "checkedAt": "2026-10-06"
+  },
+  "The Clink": {
+    "costForTwo": 1500,
+    "source": "https://www.swiggy.com/city/bangalore/jp-nagar-restaurants/european-cuisine-restaurants",
+    "checkedAt": "2026-10-06"
+  },
+  "Pangeo": {
+    "costForTwo": 3500,
+    "source": "https://www.swiggy.com/city/bangalore/wifi-feature-restaurants-dineout",
+    "checkedAt": "2026-10-06"
+  },
+  "Roxie & Barry": {
+    "costForTwo": 1500,
+    "source": "https://www.swiggy.com/restaurants/bangalore/whitefield/roxie-barry-1339049/dineout",
+    "checkedAt": "2026-10-06"
+  },
+  "Gladia Brewery & Kitchen": {
+    "costForTwo": 1499,
+    "source": "https://www.swiggy.com/restaurants/bangalore/sarjapur-road/gladia-brewery-kitchen-1140333/dineout",
+    "checkedAt": "2026-10-06"
+  },
+  "Brix and Barrells": {
+    "costForTwo": 2000,
+    "source": "https://www.swiggy.com/restaurants/bangalore/hoodi/brix-and-barrells-1196872/dineout",
+    "checkedAt": "2026-10-06"
+  },
+  "Legends Microbrewery": {
+    "costForTwo": 3000,
+    "source": "https://www.swiggy.com/restaurants/bangalore/varthur/legends-microbrewery-1403465/dineout",
+    "checkedAt": "2026-10-06"
+  },
+  "The Azulian House": {
+    "costForTwo": 5000,
+    "source": "https://www.swiggy.com/restaurants/bangalore/kodihalli/the-azulian-house-1381676/dineout",
+    "checkedAt": "2026-10-06"
+  },
+  "Nusa — Tropical Brewvilla": {
+    "costForTwo": 2400,
+    "source": "https://www.swiggy.com/restaurants/bangalore/gunjur/nusa-tropical-brew-villa-812224/dineout",
+    "checkedAt": "2026-10-06"
+  },
+  "Helen & Lorena's Place": {
+    "costForTwo": 1500,
+    "source": "https://www.swiggy.com/restaurants/bangalore/kodathi/helen-lorena-s-place-1403579/dineout",
+    "checkedAt": "2026-10-06"
+  },
+  "The Estate Deli": {
+    "costForTwo": 600,
+    "source": "https://www.swiggy.com/restaurants/bangalore/indiranagar/the-estate-deli-1135274/dineout",
+    "checkedAt": "2026-10-06"
+  },
+  "The Porcupine — A Proper Indian Public House": {
+    "costForTwo": 1200,
+    "source": "https://www.swiggy.com/restaurants/bangalore/indiranagar/the-porcupine-1373613/dineout",
+    "checkedAt": "2026-10-06"
+  },
+  "HEYOU — MG Road": {
+    "costForTwo": 1800,
+    "source": "https://www.swiggy.com/restaurants/bangalore/mg-road/heyou-1392264/dineout",
+    "checkedAt": "2026-10-06"
+  },
+  "Baci Baci Osteria": {
+    "costForTwo": 3400,
+    "source": "https://www.swiggy.com/restaurants/bangalore/koramangala/baci-baci-osteria-1450311/dineout",
+    "checkedAt": "2026-10-06"
+  },
+  "Serious Slice — Cunningham Road": {
+    "costForTwo": 1200,
+    "source": "https://www.swiggy.com/restaurants/bangalore/cunningham-road/serious-slice-1090139/dineout",
+    "checkedAt": "2026-10-06"
+  },
+  "Candles Brewhouse": {
+    "costForTwo": 2500,
+    "source": "https://www.swiggy.com/restaurants/bangalore/hebbal/candles-brewhouse-649200/dineout",
+    "checkedAt": "2026-10-06"
+  },
+  "Nido Craft Kitchen & Bar": {
+    "costForTwo": 1500,
+    "source": "https://www.swiggy.com/restaurants/bangalore/yelahanka/nido-craft-kitchen-bar-996688/dineout",
+    "checkedAt": "2026-10-06"
+  },
+  "Zero Degree On The Hill Brewery And Kitchen": {
+    "costForTwo": 1800,
+    "source": "https://www.swiggy.com/restaurants/bangalore/rajarajeshwari-nagar/zero-degree-on-the-hill-brewery-and-kitchen-1394090/dineout",
+    "checkedAt": "2026-10-06"
+  },
+  "Suka Brew and Kitchen": {
+    "costForTwo": 2000,
+    "source": "https://www.swiggy.com/restaurants/bangalore/ullal/suka-brew-and-kitchen-1275807/dineout",
+    "checkedAt": "2026-10-06"
+  },
+  "Paros — Brewery & Kitchen": {
+    "costForTwo": 900,
+    "source": "https://www.swiggy.com/restaurants/bangalore/rajarajeshwari-nagar/paros-brewery-and-kitchen-1268675/dineout",
+    "checkedAt": "2026-10-06"
+  },
+  "Oia Bangalore": {
+    "costForTwo": 2500,
+    "source": "https://www.swiggy.com/restaurants/bangalore/visthar/oia-711661/dineout",
+    "checkedAt": "2026-10-06"
+  },
+  "Chifa — Marathahalli": {
+    "costForTwo": 1800,
+    "source": "https://www.swiggy.com/restaurants/bangalore/marathahalli/chifa-1376213/dineout",
+    "checkedAt": "2026-10-06"
+  }
+};
+const money=new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:2});
+const withPrice=(place)=>({...place,...pricing[place.name]});
+const byName=(a,b)=>a.name.localeCompare(b.name,'en',{sensitivity:'base'});
+const byPrice=(a,b)=>(b.costForTwo??-1)-(a.costForTwo??-1)||byName(a,b);
 const visited=[
 ['Roxie & Barry','Italian-led restaurant and bar with European plates, cocktails and a polished Whitefield setting.'],
 ['Tall Oaks','Nature-inspired, pet-friendly dining with lush open spaces and a resort-like feel.'],
@@ -8,8 +149,9 @@ const visited=[
 ['Mykos Craft Kitchen & Bar','Rooftop craft kitchen and bar mixing global cuisines, live entertainment and city views.'],
 ['Masterpiece Buffet','Large-format buffet spanning Indian, Mediterranean, biryani and Andhra favourites.'],
 ['Koko Samba','Lively Bengaluru dining stop with a bold, contemporary night-out atmosphere.']
-].map(([name,description],i)=>({rank:i+1,name,description}));
+].map(([name,description],i)=>withPrice({rank:i+1,name,description}));
 const bucket=[
+['Chifa — Marathahalli',"Rooftop restaurant and bar at King's Cross, Marathahalli, serving Peruvian, Latin American and Cantonese cuisine."],
 ["Helen's Place — Marathahalli",'Neighbourhood restaurant and bar in Marathahalli with a relaxed, social setting.'],
 ['Beige Bangalore','Rooftop pub and lounge known for its stylish lighting, cocktails and live entertainment.'],
 ['Brix and Barrells','Mahadevapura brewpub with craft beer, live music and a casual group-friendly vibe.'],
@@ -34,11 +176,21 @@ const bucket=[
 ['Suka Brew and Kitchen','Nagarbhavi rooftop and waterfront-style lounge with a broad Indian and Asian-leaning menu.'],
 ['Paros — Brewery & Kitchen','Aegean-inspired rooftop brewery pairing small-batch beer, global food and sunset-friendly spaces.'],
 ['Oia Bangalore','Santorini-inspired mega-pub with dramatic architecture, open-air spaces, beer and live entertainment.']
-].map(([name,description])=>({name,description})).sort((a,b)=>a.name.localeCompare(b.name, 'en', {sensitivity:'base'}));
+].map(([name,description])=>withPrice({name,description}));
 const cover=[{name:'Pangeo',description:'High-end Brigade Road lounge blending global dining, cocktails and high-energy nightlife.',note:'Cover charge requested for a solo visit despite the listing showing free entry.'}];
+cover.forEach(p=>Object.assign(p,pricing[p.name]));
 let active='visited';
+let sortOrder='price-desc';
+$: sortedBucket=[...bucket].sort(sortOrder==='alphabetical'?byName:byPrice);
 const tabs=[['visited','Visited',visited.length],['bucket','Bucket list',bucket.length],['cover','Need cover charge',cover.length]];
 </script>
+{#snippet price(p)}
+<div class="price-info">{#if p.costForTwo}
+<strong>≈ {money.format(p.costForTwo/2)}<small>/person</small></strong>
+<a href={p.source} target="_blank" rel="noopener noreferrer" aria-label={"Swiggy Dineout pricing for "+p.name} title={"Listed "+money.format(p.costForTwo)+" for two · Checked 6 Oct 2026"}>Swiggy Dineout ↗</a>
+{:else}<span class="price-unavailable">Price not verified</span>{/if}</div>
+{/snippet}
+
 <svelte:head><title>B'lore Lore — Bengaluru trail</title></svelte:head>
 <div class="top-banner"><span>Tawan</span><a href="mailto:tawanjsingh@gmail.com">tawanjsingh@gmail.com</a></div>
 <section class="hero"><img src={heroImage} alt="Blore Lore header" /><div class="hero-overlay"></div><div class="hero-title"><div class="eyebrow">BENGALURU</div><h1>B'lore <span>Lore.</span></h1><p class="intro">Places worth remembering, places still calling, and places that made entry complicated.</p></div></section>
@@ -46,7 +198,20 @@ const tabs=[['visited','Visited',visited.length],['bucket','Bucket list',bucket.
 <header class="stats-only"><div class="stats"><div><strong>{visited.length}</strong><span>visited</span></div><div><strong>{bucket.length}</strong><span>to go</span></div><div><strong>{cover.length}</strong><span>caution</span></div></div></header>
 <nav>{#each tabs as t}<button class:active={active===t[0]} onclick={()=>active=t[0]}><span>{t[1]}</span><small>{t[2]}</small></button>{/each}</nav>
 <main>
-{#if active==='visited'}<div class="section-head"><div><span class="kicker">VISITED</span><h2>Been there.</h2></div><p>Tawan's picks, in order.</p></div><div class="rank-list">{#each visited as p}<article class:podium={p.rank<=3}><div class="rank">#{p.rank}</div><div class="place"><h3>{p.name}</h3><span>{p.description}</span></div>{#if p.rank===1}<div class="badge">TOP PICK</div>{/if}</article>{/each}</div>
-{:else if active==='bucket'}<div class="section-head"><div><span class="kicker">NEXT UP</span><h2>Still on the list.</h2></div><p>Places Tawan hasn't visited yet.</p></div><div class="cards">{#each bucket as p,i}<article class="card"><span class="index">{String(i+1).padStart(2,'0')}</span><div><h4>{p.name}</h4><p>{p.description}</p></div><span class="arrow">↗</span></article>{/each}</div>
-{:else}<div class="section-head"><div><span class="kicker">THE FINE PRINT</span><h2>Need cover charge.</h2></div><p>Places separated out when entry comes with an extra condition.</p></div><div class="cover-grid">{#each cover as p}<article class="cover-card"><div class="warning">₹</div><div><h3>{p.name}</h3><p>{p.description}</p><p class="cover-note">{p.note}</p></div></article>{/each}</div>{/if}
+<p class="pricing-note">Approximate per-person cost = Swiggy Dineout’s listed cost for two ÷ 2. Before offers; actual spend and taxes/charges may vary. Cover charges are separate. Checked 6 Oct 2026.</p>
+{#if active==='visited'}<div class="section-head"><div><span class="kicker">VISITED</span><h2>Been there.</h2></div><p>Tawan's picks, in order.</p></div><div class="rank-list">{#each visited as p}<article class:podium={p.rank<=3}><div class="rank">#{p.rank}</div><div class="place"><h3>{p.name}</h3><span>{p.description}</span>{@render price(p)}</div>{#if p.rank===1}<div class="badge">TOP PICK</div>{/if}</article>{/each}</div>
+{:else if active==='bucket'}<div class="section-head"><div><span class="kicker">NEXT UP</span><h2>Still on the list.</h2></div><p>Places Tawan hasn't visited yet.</p></div><label class="sort-control">Sort by <select bind:value={sortOrder}><option value="price-desc">Price: high to low</option><option value="alphabetical">Alphabetical: A–Z</option></select></label><div class="cards">{#each sortedBucket as p,i}<article class="card"><span class="index">{String(i+1).padStart(2,'0')}</span><div><h4>{p.name}</h4><p>{p.description}</p>{@render price(p)}</div><span class="arrow">↗</span></article>{/each}</div>
+{:else}<div class="section-head"><div><span class="kicker">THE FINE PRINT</span><h2>Need cover charge.</h2></div><p>Places separated out when entry comes with an extra condition.</p></div><div class="cover-grid">{#each cover as p}<article class="cover-card"><div class="warning">₹</div><div><h3>{p.name}</h3><p>{p.description}</p>{@render price(p)}<p class="cover-note">{p.note}</p></div></article>{/each}</div>{/if}
 </main><footer><span>BLR / 2026</span><span>EAT · SHOOT · RANK · REPEAT</span></footer></div>
+
+<style>
+.pricing-note{font-size:12px;line-height:1.6;color:#625c55;margin:0 0 24px;max-width:780px}
+.price-info{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px;margin-top:12px}
+.price-info strong{font-size:16px;color:#25221f;font-weight:700}
+.price-info small{font-size:11px;font-weight:400;margin-left:3px}
+.price-info a{color:#655642;font-size:11px;text-decoration:underline;text-underline-offset:3px}
+.price-unavailable{font-size:12px;color:#726b62}
+.sort-control{display:flex;align-items:center;gap:12px;font-size:12px;margin:0 0 22px;color:#625c55}
+.sort-control select{font:inherit;font-size:13px;background:#fffaf2;color:#25221f;border:1px solid #c8bdaf;border-radius:6px;padding:10px 12px;max-width:100%}
+.sort-control select:focus-visible,.price-info a:focus-visible{outline:2px solid #78552f;outline-offset:3px}
+</style>
