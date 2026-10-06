@@ -194,6 +194,7 @@ const withPrice=(place)=>({...place,...pricing[place.name],...distanceFromTreePa
 const byName=(a,b)=>a.name.localeCompare(b.name,'en',{sensitivity:'base'});
 const byPrice=(a,b)=>(a.costForTwo??Infinity)-(b.costForTwo??Infinity)||byName(a,b);
 const byDistance=(a,b)=>(a.distanceKm??Infinity)-(b.distanceKm??Infinity)||byName(a,b);
+const byRank=(a,b)=>(a.rank??Infinity)-(b.rank??Infinity);
 const visited=[
 ['Roxie & Barry','Italian-led restaurant and bar with European plates, cocktails and a polished Whitefield setting.'],
 ['Tall Oaks','Nature-inspired, pet-friendly dining with lush open spaces and a resort-like feel.'],
@@ -234,7 +235,9 @@ const cover=[{name:'Pangeo',description:'High-end Brigade Road lounge blending g
 cover.forEach(p=>Object.assign(p,pricing[p.name]));
 let active='visited';
 let sortOrder='distance-asc';
+let visitedSort='rank';
 $: sortedBucket=[...bucket].sort(sortOrder==='alphabetical'?byName:sortOrder==='price-asc'?byPrice:byDistance);
+$: sortedVisited=[...visited].sort(visitedSort==='alphabetical'?byName:visitedSort==='price-asc'?byPrice:visitedSort==='distance-asc'?byDistance:byRank);
 const tabs=[['visited','Visited',visited.length],['bucket','Bucket list',bucket.length],['cover','Need cover charge',cover.length]];
 </script>
 {#snippet price(p)}
@@ -252,7 +255,7 @@ const tabs=[['visited','Visited',visited.length],['bucket','Bucket list',bucket.
 <nav>{#each tabs as t}<button class:active={active===t[0]} onclick={()=>active=t[0]}><span>{t[1]}</span><small>{t[2]}</small></button>{/each}</nav>
 <main>
 <p class="pricing-note">Approx. ₹/person, rounded to nearest ₹10. Dineout; District where unavailable. Before offers and extra charges. Checked 6 Oct 2026. Distance is driving km from Kadugodi Tree Park Metro.</p>
-{#if active==='visited'}<div class="section-head"><div><span class="kicker">VISITED</span><h2>Been there.</h2></div><p>Tawan's picks, in order.</p></div><div class="cards">{#each visited as p}<article class="card"><span class="index">{String(p.rank).padStart(2,'0')}</span><div><h4>{p.name}</h4><p>{p.description}</p>{@render price(p)}</div></article>{/each}</div>
+{#if active==='visited'}<div class="section-head"><div><span class="kicker">VISITED</span><h2>Been there.</h2></div><p>Tawan's picks, in order.</p></div><label class="sort-control">Sort by <select bind:value={visitedSort}><option value="rank">Ranking</option><option value="distance-asc">Distance: low to high</option><option value="price-asc">Price: low to high</option><option value="alphabetical">Alphabetical: A–Z</option></select></label><div class="cards">{#each sortedVisited as p,i}<article class="card"><span class="index">{String(visitedSort==='rank'?p.rank:i+1).padStart(2,'0')}</span><div><h4>{p.name}</h4><p>{p.description}</p>{@render price(p)}</div></article>{/each}</div>
 {:else if active==='bucket'}<div class="section-head"><div><span class="kicker">NEXT UP</span><h2>Still on the list.</h2></div><p>Places Tawan hasn't visited yet.</p></div><label class="sort-control">Sort by <select bind:value={sortOrder}><option value="distance-asc">Distance: low to high</option><option value="price-asc">Price: low to high</option><option value="alphabetical">Alphabetical: A–Z</option></select></label><div class="cards">{#each sortedBucket as p,i}<article class="card"><span class="index">{String(i+1).padStart(2,'0')}</span><div><h4>{p.name}</h4><p>{p.description}</p>{@render price(p)}</div></article>{/each}</div>
 {:else}<div class="section-head"><div><span class="kicker">THE FINE PRINT</span><h2>Need cover charge.</h2></div><p>Places separated out when entry comes with an extra condition.</p></div><div class="cover-grid">{#each cover as p}<article class="cover-card"><div class="warning">₹</div><div><h3>{p.name}</h3><p>{p.description}</p>{@render price(p)}<p class="cover-note">{p.note}</p></div></article>{/each}</div>{/if}
 </main><footer><span>BLR / 2026</span><span>EAT · SHOOT · RANK · REPEAT</span></footer></div>
