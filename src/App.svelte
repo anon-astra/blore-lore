@@ -135,9 +135,26 @@ const pricing={
     "costForTwo": 1800,
     "source": "https://www.swiggy.com/restaurants/bangalore/marathahalli/chifa-1376213/dineout",
     "checkedAt": "2026-10-06"
+  },
+  "URU (Kaavu) — Whitefield": {
+    "costForTwo": 2300,
+    "source": "https://www.district.in/dining/bangalore/uru-brookefield-bangalore",
+    "sourceName": "District",
+    "checkedAt": "2026-10-06"
+  },
+  "Sunrise Bar and Lounge": {
+    "costForTwo": 2000,
+    "source": "https://www.district.in/dining/bangalore/sunrise-bar-lounge-peenya-bangalore",
+    "sourceName": "District",
+    "checkedAt": "2026-10-06"
+  },
+  "Molly's Courtyard": {
+    "costForTwo": 1200,
+    "source": "https://www.swiggy.com/restaurants/bangalore/vasanth-nagar/molly-s-courtyard-1358162/dineout",
+    "checkedAt": "2026-10-06"
   }
 };
-const money=new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:2});
+const roundedPerPerson=(costForTwo)=>Math.round(costForTwo/20)*10;
 const withPrice=(place)=>({...place,...pricing[place.name]});
 const byName=(a,b)=>a.name.localeCompare(b.name,'en',{sensitivity:'base'});
 const byPrice=(a,b)=>(b.costForTwo??-1)-(a.costForTwo??-1)||byName(a,b);
@@ -186,8 +203,7 @@ const tabs=[['visited','Visited',visited.length],['bucket','Bucket list',bucket.
 </script>
 {#snippet price(p)}
 <div class="price-info">{#if p.costForTwo}
-<strong>≈ {money.format(p.costForTwo/2)}<small>/person</small></strong>
-<a href={p.source} target="_blank" rel="noopener noreferrer" aria-label={"Swiggy Dineout pricing for "+p.name} title={"Listed "+money.format(p.costForTwo)+" for two · Checked 6 Oct 2026"}>Swiggy Dineout ↗</a>
+<span class="price-chip" aria-label={"Approximately "+roundedPerPerson(p.costForTwo)+" rupees per person, "+(p.sourceName??'Dineout')} title="Approximate cost per person"><span>{roundedPerPerson(p.costForTwo)}</span><span aria-hidden="true"> • </span><span>{p.sourceName??'Dineout'}</span></span>
 {:else}<span class="price-unavailable">Price not verified</span>{/if}</div>
 {/snippet}
 
@@ -198,7 +214,7 @@ const tabs=[['visited','Visited',visited.length],['bucket','Bucket list',bucket.
 <header class="stats-only"><div class="stats"><div><strong>{visited.length}</strong><span>visited</span></div><div><strong>{bucket.length}</strong><span>to go</span></div><div><strong>{cover.length}</strong><span>caution</span></div></div></header>
 <nav>{#each tabs as t}<button class:active={active===t[0]} onclick={()=>active=t[0]}><span>{t[1]}</span><small>{t[2]}</small></button>{/each}</nav>
 <main>
-<p class="pricing-note">Approximate per-person cost = Swiggy Dineout’s listed cost for two ÷ 2. Before offers; actual spend and taxes/charges may vary. Cover charges are separate. Checked 6 Oct 2026.</p>
+<p class="pricing-note">Approx. ₹/person, rounded to nearest ₹10. Dineout; District where unavailable. Before offers and extra charges. Checked 6 Oct 2026.</p>
 {#if active==='visited'}<div class="section-head"><div><span class="kicker">VISITED</span><h2>Been there.</h2></div><p>Tawan's picks, in order.</p></div><div class="rank-list">{#each visited as p}<article class:podium={p.rank<=3}><div class="rank">#{p.rank}</div><div class="place"><h3>{p.name}</h3><span>{p.description}</span>{@render price(p)}</div>{#if p.rank===1}<div class="badge">TOP PICK</div>{/if}</article>{/each}</div>
 {:else if active==='bucket'}<div class="section-head"><div><span class="kicker">NEXT UP</span><h2>Still on the list.</h2></div><p>Places Tawan hasn't visited yet.</p></div><label class="sort-control">Sort by <select bind:value={sortOrder}><option value="price-desc">Price: high to low</option><option value="alphabetical">Alphabetical: A–Z</option></select></label><div class="cards">{#each sortedBucket as p,i}<article class="card"><span class="index">{String(i+1).padStart(2,'0')}</span><div><h4>{p.name}</h4><p>{p.description}</p>{@render price(p)}</div><span class="arrow">↗</span></article>{/each}</div>
 {:else}<div class="section-head"><div><span class="kicker">THE FINE PRINT</span><h2>Need cover charge.</h2></div><p>Places separated out when entry comes with an extra condition.</p></div><div class="cover-grid">{#each cover as p}<article class="cover-card"><div class="warning">₹</div><div><h3>{p.name}</h3><p>{p.description}</p>{@render price(p)}<p class="cover-note">{p.note}</p></div></article>{/each}</div>{/if}
@@ -206,12 +222,11 @@ const tabs=[['visited','Visited',visited.length],['bucket','Bucket list',bucket.
 
 <style>
 .pricing-note{font-size:12px;line-height:1.6;color:#625c55;margin:0 0 24px;max-width:780px}
-.price-info{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px;margin-top:12px}
-.price-info strong{font-size:16px;color:#25221f;font-weight:700}
-.price-info small{font-size:11px;font-weight:400;margin-left:3px}
-.price-info a{color:#655642;font-size:11px;text-decoration:underline;text-underline-offset:3px}
+.price-info{margin-top:10px}
+.price-info .price-chip{display:inline-flex;align-items:center;gap:5px;border-radius:999px;background:#f2efe8;border:1px solid #dfd9ce;padding:5px 10px;color:#51483c;font-size:11px;line-height:1.25;font-weight:600;white-space:nowrap}
+.price-info .price-chip span{color:inherit;font-size:inherit;line-height:inherit}
 .price-unavailable{font-size:12px;color:#726b62}
 .sort-control{display:flex;align-items:center;gap:12px;font-size:12px;margin:0 0 22px;color:#625c55}
 .sort-control select{font:inherit;font-size:13px;background:#fffaf2;color:#25221f;border:1px solid #c8bdaf;border-radius:6px;padding:10px 12px;max-width:100%}
-.sort-control select:focus-visible,.price-info a:focus-visible{outline:2px solid #78552f;outline-offset:3px}
+.sort-control select:focus-visible{outline:2px solid #78552f;outline-offset:3px}
 </style>
