@@ -155,9 +155,45 @@ const pricing={
   }
 };
 const roundedPerPerson=(costForTwo)=>Math.round(costForTwo/20)*10;
-const withPrice=(place)=>({...place,...pricing[place.name]});
+const distanceFromTreePark={
+  "Roxie & Barry": {"distanceKm": 4.1, "driveMin": 5},
+  "Tall Oaks": {"distanceKm": 3.2, "driveMin": 6},
+  "Tropika Brewing Co": {"distanceKm": 10.1, "driveMin": 10},
+  "Gladia Brewery & Kitchen": {"distanceKm": 17.5, "driveMin": 20},
+  "Mykos Craft Kitchen & Bar": {"distanceKm": 25.6, "driveMin": 30},
+  "Masterpiece Buffet": {"distanceKm": 2.8, "driveMin": 4},
+  "Koko Samba": {"distanceKm": 8.8, "driveMin": 10},
+  "Chifa — Marathahalli": {"distanceKm": 12.0, "driveMin": 13},
+  "Helen's Place — Marathahalli": {"distanceKm": 11.1, "driveMin": 11},
+  "Beige Bangalore": {"distanceKm": 10.2, "driveMin": 10},
+  "Brix and Barrells": {"distanceKm": 6.3, "driveMin": 8},
+  "URU (Kaavu) — Whitefield": {"distanceKm": 7.7, "driveMin": 10},
+  "Legends Microbrewery": {"distanceKm": 7.2, "driveMin": 7},
+  "The Azulian House": {"distanceKm": 15.7, "driveMin": 19},
+  "Nusa — Tropical Brewvilla": {"distanceKm": 9.9, "driveMin": 10},
+  "Helen & Lorena's Place": {"distanceKm": 16.9, "driveMin": 22},
+  "The Estate Deli": {"distanceKm": 14.5, "driveMin": 16},
+  "The Porcupine — A Proper Indian Public House": {"distanceKm": 14.1, "driveMin": 16},
+  "HEYOU — MG Road": {"distanceKm": 17.3, "driveMin": 21},
+  "Baci Baci Osteria": {"distanceKm": 22.1, "driveMin": 25},
+  "Molly's Courtyard": {"distanceKm": 20.2, "driveMin": 24},
+  "Serious Slice — Cunningham Road": {"distanceKm": 19.6, "driveMin": 22},
+  "Cleo's Up Top": {"distanceKm": 14.2, "driveMin": 16},
+  "Candles Brewhouse": {"distanceKm": 25.5, "driveMin": 30},
+  "The Clink": {"distanceKm": 26.2, "driveMin": 31},
+  "Mac Brew Farm": {"distanceKm": 28.4, "driveMin": 33},
+  "Nido Craft Kitchen & Bar": {"distanceKm": 24.7, "driveMin": 33},
+  "Sunrise Bar and Lounge": {"distanceKm": 29.3, "driveMin": 34},
+  "Zero Degree On The Hill Brewery And Kitchen": {"distanceKm": 31.5, "driveMin": 35},
+  "Suka Brew and Kitchen": {"distanceKm": 32.1, "driveMin": 36},
+  "Paros — Brewery & Kitchen": {"distanceKm": 31.9, "driveMin": 36},
+  "Oia Bangalore": {"distanceKm": 31.0, "driveMin": 36},
+  "Pangeo": {"distanceKm": 18.0, "driveMin": 21}
+};
+const withPrice=(place)=>({...place,...pricing[place.name],...distanceFromTreePark[place.name]});
 const byName=(a,b)=>a.name.localeCompare(b.name,'en',{sensitivity:'base'});
 const byPrice=(a,b)=>(a.costForTwo??Infinity)-(b.costForTwo??Infinity)||byName(a,b);
+const byDistance=(a,b)=>(a.distanceKm??Infinity)-(b.distanceKm??Infinity)||byName(a,b);
 const visited=[
 ['Roxie & Barry','Italian-led restaurant and bar with European plates, cocktails and a polished Whitefield setting.'],
 ['Tall Oaks','Nature-inspired, pet-friendly dining with lush open spaces and a resort-like feel.'],
@@ -197,14 +233,15 @@ const bucket=[
 const cover=[{name:'Pangeo',description:'High-end Brigade Road lounge blending global dining, cocktails and high-energy nightlife.',note:'Cover charge requested for a solo visit despite the listing showing free entry.'}];
 cover.forEach(p=>Object.assign(p,pricing[p.name]));
 let active='visited';
-let sortOrder='price-asc';
-$: sortedBucket=[...bucket].sort(sortOrder==='alphabetical'?byName:byPrice);
+let sortOrder='distance-asc';
+$: sortedBucket=[...bucket].sort(sortOrder==='alphabetical'?byName:sortOrder==='price-asc'?byPrice:byDistance);
 const tabs=[['visited','Visited',visited.length],['bucket','Bucket list',bucket.length],['cover','Need cover charge',cover.length]];
 </script>
 {#snippet price(p)}
 <div class="price-info">{#if p.costForTwo}
 <span class="price-chip" aria-label={"Approximately "+roundedPerPerson(p.costForTwo)+" rupees per person, "+(p.sourceName??'Dineout')} title="Approximate cost per person"><span>{roundedPerPerson(p.costForTwo)}</span><span aria-hidden="true"> • </span><span>{p.sourceName??'Dineout'}</span></span>
-{:else}<span class="price-unavailable">Price not verified</span>{/if}</div>
+{:else}<span class="price-unavailable">Price not verified</span>{/if}
+{#if p.distanceKm}<span class="distance-chip" title="Driving distance from Kadugodi Tree Park Metro">{p.distanceKm} km · {p.driveMin} min</span>{/if}</div>
 {/snippet}
 
 <svelte:head><title>B'lore Lore — Bengaluru trail</title></svelte:head>
@@ -214,9 +251,9 @@ const tabs=[['visited','Visited',visited.length],['bucket','Bucket list',bucket.
 <header class="stats-only"><div class="stats"><div><strong>{visited.length}</strong><span>visited</span></div><div><strong>{bucket.length}</strong><span>to go</span></div><div><strong>{cover.length}</strong><span>caution</span></div></div></header>
 <nav>{#each tabs as t}<button class:active={active===t[0]} onclick={()=>active=t[0]}><span>{t[1]}</span><small>{t[2]}</small></button>{/each}</nav>
 <main>
-<p class="pricing-note">Approx. ₹/person, rounded to nearest ₹10. Dineout; District where unavailable. Before offers and extra charges. Checked 6 Oct 2026.</p>
+<p class="pricing-note">Approx. ₹/person, rounded to nearest ₹10. Dineout; District where unavailable. Before offers and extra charges. Checked 6 Oct 2026. Distance is driving km from Kadugodi Tree Park Metro, off-peak.</p>
 {#if active==='visited'}<div class="section-head"><div><span class="kicker">VISITED</span><h2>Been there.</h2></div><p>Tawan's picks, in order.</p></div><div class="rank-list">{#each visited as p}<article class:podium={p.rank<=3}><div class="rank">#{p.rank}</div><div class="place"><h3>{p.name}</h3><span>{p.description}</span>{@render price(p)}</div>{#if p.rank===1}<div class="badge">TOP PICK</div>{/if}</article>{/each}</div>
-{:else if active==='bucket'}<div class="section-head"><div><span class="kicker">NEXT UP</span><h2>Still on the list.</h2></div><p>Places Tawan hasn't visited yet.</p></div><label class="sort-control">Sort by <select bind:value={sortOrder}><option value="price-asc">Price: low to high</option><option value="alphabetical">Alphabetical: A–Z</option></select></label><div class="cards">{#each sortedBucket as p,i}<article class="card"><span class="index">{String(i+1).padStart(2,'0')}</span><div><h4>{p.name}</h4><p>{p.description}</p>{@render price(p)}</div><span class="arrow">↗</span></article>{/each}</div>
+{:else if active==='bucket'}<div class="section-head"><div><span class="kicker">NEXT UP</span><h2>Still on the list.</h2></div><p>Places Tawan hasn't visited yet.</p></div><label class="sort-control">Sort by <select bind:value={sortOrder}><option value="distance-asc">Distance: low to high</option><option value="price-asc">Price: low to high</option><option value="alphabetical">Alphabetical: A–Z</option></select></label><div class="cards">{#each sortedBucket as p,i}<article class="card"><span class="index">{String(i+1).padStart(2,'0')}</span><div><h4>{p.name}</h4><p>{p.description}</p>{@render price(p)}</div><span class="arrow">↗</span></article>{/each}</div>
 {:else}<div class="section-head"><div><span class="kicker">THE FINE PRINT</span><h2>Need cover charge.</h2></div><p>Places separated out when entry comes with an extra condition.</p></div><div class="cover-grid">{#each cover as p}<article class="cover-card"><div class="warning">₹</div><div><h3>{p.name}</h3><p>{p.description}</p>{@render price(p)}<p class="cover-note">{p.note}</p></div></article>{/each}</div>{/if}
 </main><footer><span>BLR / 2026</span><span>EAT · SHOOT · RANK · REPEAT</span></footer></div>
 
@@ -226,6 +263,7 @@ const tabs=[['visited','Visited',visited.length],['bucket','Bucket list',bucket.
 .price-info .price-chip{display:inline-flex;align-items:center;justify-content:center;gap:5px;height:24px;margin:0;border-radius:999px;background:#f2efe8;border:1px solid #dfd9ce;padding:0 10px;color:#51483c;font-size:11px;line-height:1;font-weight:600;white-space:nowrap;vertical-align:middle}
 .price-info .price-chip span{display:inline;margin:0;padding:0;color:inherit;font-size:inherit;line-height:1}
 .price-unavailable{font-size:12px;color:#726b62}
+.distance-chip{display:inline-flex;align-items:center;height:24px;margin:8px 0 0 8px;border-radius:999px;background:#e7f0e6;border:1px solid #c9d7c6;padding:0 10px;color:#243024;font-size:11px;line-height:1;font-weight:600;white-space:nowrap}
 .sort-control{display:flex;align-items:center;gap:12px;font-size:12px;margin:0 0 22px;color:#625c55}
 .sort-control select{font:inherit;font-size:13px;background:#fffaf2;color:#25221f;border:1px solid #c8bdaf;border-radius:6px;padding:10px 12px;max-width:100%}
 .sort-control select:focus-visible{outline:2px solid #78552f;outline-offset:3px}
