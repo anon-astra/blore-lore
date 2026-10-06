@@ -157,7 +157,7 @@ const pricing={
 const roundedPerPerson=(costForTwo)=>Math.round(costForTwo/20)*10;
 const withPrice=(place)=>({...place,...pricing[place.name]});
 const byName=(a,b)=>a.name.localeCompare(b.name,'en',{sensitivity:'base'});
-const byPrice=(a,b)=>(b.costForTwo??-1)-(a.costForTwo??-1)||byName(a,b);
+const byPrice=(a,b)=>(a.costForTwo??Infinity)-(b.costForTwo??Infinity)||byName(a,b);
 const visited=[
 ['Roxie & Barry','Italian-led restaurant and bar with European plates, cocktails and a polished Whitefield setting.'],
 ['Tall Oaks','Nature-inspired, pet-friendly dining with lush open spaces and a resort-like feel.'],
@@ -197,7 +197,7 @@ const bucket=[
 const cover=[{name:'Pangeo',description:'High-end Brigade Road lounge blending global dining, cocktails and high-energy nightlife.',note:'Cover charge requested for a solo visit despite the listing showing free entry.'}];
 cover.forEach(p=>Object.assign(p,pricing[p.name]));
 let active='visited';
-let sortOrder='price-desc';
+let sortOrder='price-asc';
 $: sortedBucket=[...bucket].sort(sortOrder==='alphabetical'?byName:byPrice);
 const tabs=[['visited','Visited',visited.length],['bucket','Bucket list',bucket.length],['cover','Need cover charge',cover.length]];
 </script>
@@ -216,15 +216,15 @@ const tabs=[['visited','Visited',visited.length],['bucket','Bucket list',bucket.
 <main>
 <p class="pricing-note">Approx. ₹/person, rounded to nearest ₹10. Dineout; District where unavailable. Before offers and extra charges. Checked 6 Oct 2026.</p>
 {#if active==='visited'}<div class="section-head"><div><span class="kicker">VISITED</span><h2>Been there.</h2></div><p>Tawan's picks, in order.</p></div><div class="rank-list">{#each visited as p}<article class:podium={p.rank<=3}><div class="rank">#{p.rank}</div><div class="place"><h3>{p.name}</h3><span>{p.description}</span>{@render price(p)}</div>{#if p.rank===1}<div class="badge">TOP PICK</div>{/if}</article>{/each}</div>
-{:else if active==='bucket'}<div class="section-head"><div><span class="kicker">NEXT UP</span><h2>Still on the list.</h2></div><p>Places Tawan hasn't visited yet.</p></div><label class="sort-control">Sort by <select bind:value={sortOrder}><option value="price-desc">Price: high to low</option><option value="alphabetical">Alphabetical: A–Z</option></select></label><div class="cards">{#each sortedBucket as p,i}<article class="card"><span class="index">{String(i+1).padStart(2,'0')}</span><div><h4>{p.name}</h4><p>{p.description}</p>{@render price(p)}</div><span class="arrow">↗</span></article>{/each}</div>
+{:else if active==='bucket'}<div class="section-head"><div><span class="kicker">NEXT UP</span><h2>Still on the list.</h2></div><p>Places Tawan hasn't visited yet.</p></div><label class="sort-control">Sort by <select bind:value={sortOrder}><option value="price-asc">Price: low to high</option><option value="alphabetical">Alphabetical: A–Z</option></select></label><div class="cards">{#each sortedBucket as p,i}<article class="card"><span class="index">{String(i+1).padStart(2,'0')}</span><div><h4>{p.name}</h4><p>{p.description}</p>{@render price(p)}</div><span class="arrow">↗</span></article>{/each}</div>
 {:else}<div class="section-head"><div><span class="kicker">THE FINE PRINT</span><h2>Need cover charge.</h2></div><p>Places separated out when entry comes with an extra condition.</p></div><div class="cover-grid">{#each cover as p}<article class="cover-card"><div class="warning">₹</div><div><h3>{p.name}</h3><p>{p.description}</p>{@render price(p)}<p class="cover-note">{p.note}</p></div></article>{/each}</div>{/if}
 </main><footer><span>BLR / 2026</span><span>EAT · SHOOT · RANK · REPEAT</span></footer></div>
 
 <style>
 .pricing-note{font-size:12px;line-height:1.6;color:#625c55;margin:0 0 24px;max-width:780px}
 .price-info{margin-top:10px}
-.price-info .price-chip{display:inline-flex;align-items:center;gap:5px;border-radius:999px;background:#f2efe8;border:1px solid #dfd9ce;padding:5px 10px;color:#51483c;font-size:11px;line-height:1.25;font-weight:600;white-space:nowrap}
-.price-info .price-chip span{color:inherit;font-size:inherit;line-height:inherit}
+.price-info .price-chip{display:inline-flex;align-items:center;justify-content:center;gap:5px;height:24px;margin:0;border-radius:999px;background:#f2efe8;border:1px solid #dfd9ce;padding:0 10px;color:#51483c;font-size:11px;line-height:1;font-weight:600;white-space:nowrap;vertical-align:middle}
+.price-info .price-chip span{display:inline;margin:0;padding:0;color:inherit;font-size:inherit;line-height:1}
 .price-unavailable{font-size:12px;color:#726b62}
 .sort-control{display:flex;align-items:center;gap:12px;font-size:12px;margin:0 0 22px;color:#625c55}
 .sort-control select{font:inherit;font-size:13px;background:#fffaf2;color:#25221f;border:1px solid #c8bdaf;border-radius:6px;padding:10px 12px;max-width:100%}
