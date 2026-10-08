@@ -197,6 +197,7 @@ const byDistance=(a,b)=>(a.distanceKm??Infinity)-(b.distanceKm??Infinity)||byNam
 const byRank=(a,b)=>(a.rank??Infinity)-(b.rank??Infinity);
 const visited=[
 ['Roxie & Barry','Italian-led restaurant and bar with European plates, cocktails and a polished Whitefield setting.'],
+['Chifa — Marathahalli',"Rooftop restaurant and bar at King's Cross, Marathahalli, serving Peruvian, Latin American and Cantonese cuisine."],
 ['Tall Oaks','Nature-inspired, pet-friendly dining with lush open spaces and a resort-like feel.'],
 ['Tropika Brewing Co','Tropical-themed brewpub built around unhurried craft beer and an easygoing escape.'],
 ['Gladia Brewery & Kitchen','Roman-inspired brewery with grand interiors, in-house craft beer and global flavours.'],
@@ -205,7 +206,6 @@ const visited=[
 ['Koko Samba','Lively Bengaluru dining stop with a bold, contemporary night-out atmosphere.']
 ].map(([name,description],i)=>withPrice({rank:i+1,name,description}));
 const bucket=[
-['Chifa — Marathahalli',"Rooftop restaurant and bar at King's Cross, Marathahalli, serving Peruvian, Latin American and Cantonese cuisine."],
 ["Helen's Place — Marathahalli",'Neighbourhood restaurant and bar in Marathahalli with a relaxed, social setting.'],
 ['Beige Bangalore','Rooftop pub and lounge known for its stylish lighting, cocktails and live entertainment.'],
 ['Brix and Barrells','Mahadevapura brewpub with craft beer, live music and a casual group-friendly vibe.'],
