@@ -152,6 +152,11 @@ const pricing={
     "costForTwo": 1200,
     "source": "https://www.swiggy.com/restaurants/bangalore/vasanth-nagar/molly-s-courtyard-1358162/dineout",
     "checkedAt": "2026-10-06"
+  },
+  "KayKoy Bangalore": {
+    "costForTwo": 1200,
+    "source": "https://www.swiggy.com/restaurants/bangalore/sompura/kay-koy-1385880/dineout",
+    "checkedAt": "2026-10-10"
   }
 };
 const roundedPerPerson=(costForTwo)=>Math.round(costForTwo/20)*10;
@@ -188,7 +193,8 @@ const distanceFromTreePark={
   "Suka Brew and Kitchen": {"distanceKm": 36, "driveMin": 36},
   "Paros — Brewery & Kitchen": {"distanceKm": 35, "driveMin": 36},
   "Oia Bangalore": {"distanceKm": 26, "driveMin": 36},
-  "Pangeo": {"distanceKm": 21, "driveMin": 21}
+  "Pangeo": {"distanceKm": 21, "driveMin": 21},
+  "KayKoy Bangalore": {"distanceKm": 19}
 };
 const withPrice=(place)=>({...place,...pricing[place.name],...distanceFromTreePark[place.name]});
 const byName=(a,b)=>a.name.localeCompare(b.name,'en',{sensitivity:'base'});
@@ -200,6 +206,7 @@ const visited=[
 ['Chifa — Marathahalli',"Rooftop restaurant and bar at King's Cross, Marathahalli, serving Peruvian, Latin American and Cantonese cuisine."],
 ['Tall Oaks','Nature-inspired, pet-friendly dining with lush open spaces and a resort-like feel.'],
 ['Tropika Brewing Co','Tropical-themed brewpub built around unhurried craft beer and an easygoing escape.'],
+['KayKoy Bangalore','Sompura, Sarjapur Road brew-and-kitchen that is calm and homely by day and turns club by night.'],
 ['Gladia Brewery & Kitchen','Roman-inspired brewery with grand interiors, in-house craft beer and global flavours.'],
 ['Mykos Craft Kitchen & Bar','Rooftop craft kitchen and bar mixing global cuisines, live entertainment and city views.'],
 ['Masterpiece Buffet','Large-format buffet spanning Indian, Mediterranean, biryani and Andhra favourites.'],
