@@ -240,41 +240,33 @@ const bucket=[
 ].map(([name,description])=>withPrice({name,description}));
 const cover=[{name:'Pangeo',description:'High-end Brigade Road lounge blending global dining, cocktails and high-energy nightlife.',note:'Cover charge requested for a solo visit despite the listing showing free entry.'}];
 cover.forEach(p=>Object.assign(p,pricing[p.name]));
-let active='visited';
-let sortOrder='distance-asc';
-let visitedSort='rank';
-$: sortedBucket=[...bucket].sort(sortOrder==='alphabetical'?byName:sortOrder==='price-asc'?byPrice:byDistance);
-$: sortedVisited=[...visited].sort(visitedSort==='alphabetical'?byName:visitedSort==='price-asc'?byPrice:visitedSort==='distance-asc'?byDistance:byRank);
-const tabs=[['visited','Visited',visited.length],['bucket','Bucket list',bucket.length],['cover','Need cover charge',cover.length]];
+let sortOrder="distance-asc";
+let visitedSort="rank";
+let showAllBucket=false;
+$: sortedBucket=[...bucket].sort(sortOrder==="alphabetical"?byName:sortOrder==="price-asc"?byPrice:byDistance);
+$: shownBucket=showAllBucket?sortedBucket:sortedBucket.slice(0,8);
+$: sortedVisited=[...visited].sort(visitedSort==="alphabetical"?byName:visitedSort==="price-asc"?byPrice:visitedSort==="distance-asc"?byDistance:byRank);
+const visitedSorts=[["rank","Rank"],["distance-asc","Distance"],["price-asc","Price"],["alphabetical","A–Z"]];
+const bucketSorts=[["distance-asc","Distance"],["price-asc","Price"],["alphabetical","A–Z"]];
+const tabs=[["visited","Visited",visited.length],["bucket","Bucket list",bucket.length],["cover","Cover charge",cover.length]];
+const parts=n=>n.split(" — ");
+const tags=["Top pick","Runner-up","Third"];
+const sizes=["xl","tall","md","wide","md","sm","sm","md","sm"];
 </script>
-{#snippet price(p)}
-<div class="price-info">{#if p.costForTwo}
-<span class="price-chip" aria-label={"Approximately "+roundedPerPerson(p.costForTwo)+" rupees per person, "+(p.sourceName??'Dineout')} title="Approximate cost per person"><span>₹{roundedPerPerson(p.costForTwo)}</span><span aria-hidden="true"> • </span><span>{p.sourceName??'Dineout'}</span></span>
-{:else}<span class="price-unavailable">Price not verified</span>{/if}
-{#if p.distanceKm}<span class="distance-chip" title="Driving distance from Kadugodi Tree Park Metro">{p.distanceKm} km</span>{/if}</div>
-{/snippet}
+{#snippet meta(p)}<div class="meta">{#if p.costForTwo}<span title="Approximate cost per person, {p.sourceName??"Dineout"}">₹{roundedPerPerson(p.costForTwo)}<i>/person</i></span>{:else}<span class="muted">Price not verified</span>{/if}{#if p.distanceKm}<span title="Driving distance from Kadugodi Tree Park Metro">{p.distanceKm} km{#if p.driveMin} · {p.driveMin} min{/if}</span>{/if}</div>{/snippet}
+{#snippet nm(n)}{parts(n)[0]}{#if parts(n)[1]}<em>{parts(n)[1]}</em>{/if}{/snippet}
 
 <svelte:head><title>B'lore Lore — Bengaluru trail</title></svelte:head>
-<div class="top-banner"><span>Tawan</span><a href="mailto:tawanjsingh@gmail.com">tawanjsingh@gmail.com</a></div>
-<section class="hero"><img src={heroImage} alt="Blore Lore header" /><div class="hero-overlay"></div><div class="hero-title"><div class="eyebrow">BENGALURU</div><h1>B'lore <span>Lore.</span></h1><p class="intro">Places worth remembering, places still calling, and places that made entry complicated.</p></div></section>
-<div class="shell">
-<header class="stats-only"><div class="stats"><div><strong>{visited.length}</strong><span>visited</span></div><div><strong>{bucket.length}</strong><span>to go</span></div><div><strong>{cover.length}</strong><span>caution</span></div></div></header>
-<nav>{#each tabs as t}<button class:active={active===t[0]} onclick={()=>active=t[0]}><span>{t[1]}</span><small>{t[2]}</small></button>{/each}</nav>
-<main>
-<p class="pricing-note">Approx. ₹/person, before offers. Updated 6 Oct 2026. Distance: Driving distance from Kadugodi Tree Park Metro.</p>
-{#if active==='visited'}<div class="section-head"><div><span class="kicker">VISITED</span><h2>Been there.</h2></div><p>Tawan's picks, in order.</p></div><label class="sort-control">Sort by <select bind:value={visitedSort}><option value="rank">Ranking</option><option value="distance-asc">Distance: low to high</option><option value="price-asc">Price: low to high</option><option value="alphabetical">Alphabetical: A–Z</option></select></label><div class="cards">{#each sortedVisited as p,i}<article class="card"><span class="index">{String(visitedSort==='rank'?p.rank:i+1).padStart(2,'0')}</span><div><h4>{p.name}</h4><p>{p.description}</p>{@render price(p)}</div></article>{/each}</div>
-{:else if active==='bucket'}<div class="section-head"><div><span class="kicker">NEXT UP</span><h2>Still on the list.</h2></div><p>Places Tawan hasn't visited yet.</p></div><label class="sort-control">Sort by <select bind:value={sortOrder}><option value="distance-asc">Distance: low to high</option><option value="price-asc">Price: low to high</option><option value="alphabetical">Alphabetical: A–Z</option></select></label><div class="cards">{#each sortedBucket as p,i}<article class="card"><span class="index">{String(i+1).padStart(2,'0')}</span><div><h4>{p.name}</h4><p>{p.description}</p>{@render price(p)}</div></article>{/each}</div>
-{:else}<div class="section-head"><div><span class="kicker">THE FINE PRINT</span><h2>Need cover charge.</h2></div><p>Places separated out when entry comes with an extra condition.</p></div><div class="cover-grid">{#each cover as p}<article class="cover-card"><div class="warning">₹</div><div><h3>{p.name}</h3><p>{p.description}</p>{@render price(p)}<p class="cover-note">{p.note}</p></div></article>{/each}</div>{/if}
-</main><footer><span>BLR / 2026</span><span>EAT · SHOOT · RANK · REPEAT</span></footer></div>
-
-<style>
-.pricing-note{font-size:12px;line-height:1.6;color:#625c55;margin:0 0 24px;max-width:780px}
-.price-info{margin-top:10px}
-.price-info .price-chip{display:inline-flex;align-items:center;justify-content:center;gap:5px;height:24px;margin:0;border-radius:999px;background:#f2efe8;border:1px solid #dfd9ce;padding:0 10px;color:#51483c;font-size:11px;line-height:1;font-weight:600;white-space:nowrap;vertical-align:middle}
-.price-info .price-chip span{display:inline;margin:0;padding:0;color:inherit;font-size:inherit;line-height:1}
-.price-unavailable{font-size:12px;color:#726b62}
-.distance-chip{display:inline-flex;align-items:center;height:24px;margin:8px 0 0 8px;border-radius:999px;background:#e7f0e6;border:1px solid #c9d7c6;padding:0 10px;color:#243024;font-size:11px;line-height:1;font-weight:600;white-space:nowrap}
-.sort-control{display:flex;align-items:center;gap:12px;font-size:12px;margin:0 0 22px;color:#625c55}
-.sort-control select{font:inherit;font-size:13px;background:#fffaf2;color:#25221f;border:1px solid #c8bdaf;border-radius:6px;padding:10px 12px;max-width:100%}
-.sort-control select:focus-visible{outline:2px solid #78552f;outline-offset:3px}
-</style>
+<header class="bar"><span class="logo">B'lore Lore<sup>®</sup></span><nav>{#each tabs as t,i}<a href={"#"+t[0]} class:on={i===0}>{t[1]} <b>{t[2]}</b></a>{/each}</nav><a class="mail" href="mailto:tawanjsingh@gmail.com">Tawan ↗</a></header>
+<section class="hero"><img src={heroImage} alt="Blore Lore header"><div class="shade"></div><div class="hero-in"><span class="eyebrow">Bengaluru · 2026</span><h1>B'lore <span>Lore.</span></h1></div></section>
+<section class="intro wrap"><p class="lede">Places worth remembering, places still calling, and places that made entry complicated.</p>
+<dl class="stats"><div><dt>{visited.length}</dt><dd>visited</dd></div><div><dt>{bucket.length}</dt><dd>to go</dd></div><div><dt>{cover.length}</dt><dd>caution</dd></div></dl></section>
+<main class="wrap">
+<section id="visited"><div class="head"><div><span class="kicker">01 — Visited</span><h2>Been there.</h2></div><div class="tools"><p>Tawan's picks, in order.</p><div class="seg" role="group" aria-label="Sort visited">{#each visitedSorts as s}<button class:on={visitedSort===s[0]} aria-pressed={visitedSort===s[0]} onclick={()=>visitedSort=s[0]}>{s[1]}</button>{/each}</div></div></div>
+<div class="bento">{#each sortedVisited as p,i (p.name)}<article class="card c{(i%9)+1} {sizes[i%9]}"><span class="num">{String(visitedSort==="rank"?p.rank:i+1).padStart(2,"0")}</span>{#if visitedSort==="rank"&&i<3}<span class="tag">{tags[i]}</span>{/if}<h3>{@render nm(p.name)}</h3><p>{p.description}</p>{@render meta(p)}</article>{/each}</div>
+<p class="fine">Approx. ₹/person, before offers. Updated 6 Oct 2026. Distance: driving distance from Kadugodi Tree Park Metro.</p></section>
+<section id="bucket"><div class="head"><div><span class="kicker">02 — Bucket list</span><h2>Still on the list.</h2></div><div class="tools"><p>Places Tawan hasn't visited yet · {shownBucket.length} of {bucket.length}</p><div class="seg" role="group" aria-label="Sort bucket list">{#each bucketSorts as s}<button class:on={sortOrder===s[0]} aria-pressed={sortOrder===s[0]} onclick={()=>sortOrder=s[0]}>{s[1]}</button>{/each}</div></div></div>
+<ul class="drift">{#each shownBucket as p,i (p.name)}<li class="b{i%4}"><span class="km">{#if sortOrder==="price-asc"&&p.costForTwo}₹{roundedPerPerson(p.costForTwo)}{:else if p.distanceKm}{p.distanceKm} km{:else}—{/if}</span><h4>{@render nm(p.name)}</h4><p class="desc">{p.description}</p>{@render meta(p)}</li>{/each}</ul>
+<button class="more" onclick={()=>showAllBucket=!showAllBucket}>{showAllBucket?"Show fewer ↑":"View all "+bucket.length+" →"}</button></section>
+<section id="cover">{#each cover as p}<article class="cover"><span class="glyph">₹</span><div><span class="kicker">The fine print · Need cover charge</span><h3>{p.name}</h3><p>{p.description}</p>{@render meta(p)}<p class="note">“{p.note}”</p></div></article>{/each}</section>
+</main><footer class="wrap"><span>BLR / 2026</span><span>Eat · Shoot · Rank · Repeat</span></footer>
