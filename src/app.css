@@ -77,3 +77,5 @@ html{scroll-behavior:smooth}section[id]{scroll-margin-top:24px}
 .drift .desc{font-size:12.5px;color:#6b665d;margin:0 0 12px}
 .drift.all li{}
 @media(max-width:760px){.drift .desc{display:none}.seg{flex-wrap:wrap}}
+/* nav sits above the hero so it never covers the image */
+.bar{position:relative;background:var(--ink)}

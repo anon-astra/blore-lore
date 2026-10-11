@@ -253,7 +253,7 @@ const parts=n=>n.split(" — ");
 const tags=["Top pick","Runner-up","Third"];
 const sizes=["xl","tall","md","wide","md","sm","sm","md","sm"];
 </script>
-{#snippet meta(p)}<div class="meta">{#if p.costForTwo}<span title="Approximate cost per person, {p.sourceName??"Dineout"}">₹{roundedPerPerson(p.costForTwo)}<i>/person</i></span>{:else}<span class="muted">Price not verified</span>{/if}{#if p.distanceKm}<span title="Driving distance from Kadugodi Tree Park Metro">{p.distanceKm} km{#if p.driveMin} · {p.driveMin} min{/if}</span>{/if}</div>{/snippet}
+{#snippet meta(p)}<div class="meta">{#if p.costForTwo}<span title="Approximate cost per person, {p.sourceName??"Dineout"}">₹{roundedPerPerson(p.costForTwo)}<i>/person</i></span>{:else}<span class="muted">Price not verified</span>{/if}{#if p.distanceKm}<span title="Driving distance from Kadugodi Tree Park Metro">{p.distanceKm} km</span>{/if}</div>{/snippet}
 {#snippet nm(n)}{parts(n)[0]}{#if parts(n)[1]}<em>{parts(n)[1]}</em>{/if}{/snippet}
 
 <svelte:head><title>B'lore Lore — Bengaluru trail</title></svelte:head>
