@@ -157,6 +157,11 @@ const pricing={
     "costForTwo": 1200,
     "source": "https://www.swiggy.com/restaurants/bangalore/sompura/kay-koy-1385880/dineout",
     "checkedAt": "2026-10-10"
+  },
+  "Chins — Lavelle Road": {
+    "costForTwo": 2000,
+    "source": "https://www.swiggy.com/restaurants/bangalore/lavelle-road/chins-1452081/dineout",
+    "checkedAt": "2026-10-17"
   }
 };
 const roundedPerPerson=(costForTwo)=>Math.round(costForTwo/20)*10;
@@ -194,7 +199,8 @@ const distanceFromTreePark={
   "Paros — Brewery & Kitchen": {"distanceKm": 35, "driveMin": 36},
   "Oia Bangalore": {"distanceKm": 26, "driveMin": 36},
   "Pangeo": {"distanceKm": 21, "driveMin": 21},
-  "KayKoy Bangalore": {"distanceKm": 19}
+  "KayKoy Bangalore": {"distanceKm": 19},
+  "Chins — Lavelle Road": {"distanceKm": 22}
 };
 const withPrice=(place)=>({...place,...pricing[place.name],...distanceFromTreePark[place.name]});
 const byName=(a,b)=>a.name.localeCompare(b.name,'en',{sensitivity:'base'});
@@ -204,6 +210,7 @@ const byRank=(a,b)=>(a.rank??Infinity)-(b.rank??Infinity);
 const visited=[
 ['Roxie & Barry','Italian-led restaurant and bar with European plates, cocktails and a polished Whitefield setting.'],
 ['Chifa — Marathahalli',"Rooftop restaurant and bar at King's Cross, Marathahalli, serving Peruvian, Latin American and Cantonese cuisine."],
+['Chins — Lavelle Road',"Chin Lung's newest chapter: a bar, coffee and kitchen spread over three levels on Lavelle Road, with an outdoor café."],
 ['Tall Oaks','Nature-inspired, pet-friendly dining with lush open spaces and a resort-like feel.'],
 ['Tropika Brewing Co','Tropical-themed brewpub built around unhurried craft beer and an easygoing escape.'],
 ['KayKoy Bangalore','Sompura, Sarjapur Road brew-and-kitchen that is calm and homely by day and turns club by night.'],
@@ -251,7 +258,6 @@ const bucketSorts=[["distance-asc","Distance"],["price-asc","Price"],["alphabeti
 const tabs=[["visited","Visited",visited.length],["bucket","Bucket list",bucket.length],["cover","Cover charge",cover.length]];
 const parts=n=>n.split(" — ");
 const tags=["Top pick","Runner-up","Third"];
-const sizes=["xl","tall","md","wide","md","sm","sm","md","sm"];
 </script>
 {#snippet meta(p)}<div class="meta">{#if p.costForTwo}<span title="Approximate cost per person, {p.sourceName??"Dineout"}">₹{roundedPerPerson(p.costForTwo)}<i>/person</i></span>{:else}<span class="muted">Price not verified</span>{/if}{#if p.distanceKm}<span title="Driving distance from Kadugodi Tree Park Metro">{p.distanceKm} km</span>{/if}</div>{/snippet}
 {#snippet nm(n)}{parts(n)[0]}{#if parts(n)[1]}<em>{parts(n)[1]}</em>{/if}{/snippet}
@@ -263,10 +269,11 @@ const sizes=["xl","tall","md","wide","md","sm","sm","md","sm"];
 <dl class="stats"><div><dt>{visited.length}</dt><dd>visited</dd></div><div><dt>{bucket.length}</dt><dd>to go</dd></div><div><dt>{cover.length}</dt><dd>caution</dd></div></dl></section>
 <main class="wrap">
 <section id="visited"><div class="head"><div><span class="kicker">01 — Visited</span><h2>Been there.</h2></div><div class="tools"><p>Tawan's picks, in order.</p><div class="seg" role="group" aria-label="Sort visited">{#each visitedSorts as s}<button class:on={visitedSort===s[0]} aria-pressed={visitedSort===s[0]} onclick={()=>visitedSort=s[0]}>{s[1]}</button>{/each}</div></div></div>
-<div class="bento">{#each sortedVisited as p,i (p.name)}<article class="card c{(i%9)+1} {sizes[i%9]}"><span class="num">{String(visitedSort==="rank"?p.rank:i+1).padStart(2,"0")}</span>{#if visitedSort==="rank"&&i<3}<span class="tag">{tags[i]}</span>{/if}<h3>{@render nm(p.name)}</h3><p>{p.description}</p>{@render meta(p)}</article>{/each}</div>
+<ol class="list">{#each sortedVisited as p,i (p.name)}<li class:lead={visitedSort==="rank"&&i===0}><span class="num">{String(visitedSort==="rank"?p.rank:i+1).padStart(2,"0")}</span><div class="main"><h3>{@render nm(p.name)}</h3>{#if visitedSort==="rank"&&i<3}<span class="tag">{tags[i]}</span>{/if}<p>{p.description}</p></div>{@render meta(p)}</li>{/each}</ol>
 <p class="fine">Approx. ₹/person, before offers. Updated 6 Oct 2026. Distance: driving distance from Kadugodi Tree Park Metro.</p></section>
 <section id="bucket"><div class="head"><div><span class="kicker">02 — Bucket list</span><h2>Still on the list.</h2></div><div class="tools"><p>Places Tawan hasn't visited yet · {shownBucket.length} of {bucket.length}</p><div class="seg" role="group" aria-label="Sort bucket list">{#each bucketSorts as s}<button class:on={sortOrder===s[0]} aria-pressed={sortOrder===s[0]} onclick={()=>sortOrder=s[0]}>{s[1]}</button>{/each}</div></div></div>
-<ul class="drift">{#each shownBucket as p,i (p.name)}<li class="b{i%4}"><span class="km">{#if sortOrder==="price-asc"&&p.costForTwo}₹{roundedPerPerson(p.costForTwo)}{:else if p.distanceKm}{p.distanceKm} km{:else}—{/if}</span><h4>{@render nm(p.name)}</h4><p class="desc">{p.description}</p>{@render meta(p)}</li>{/each}</ul>
+<ol class="list bucket">{#each shownBucket as p,i (p.name)}<li><span class="num km">{#if sortOrder==="price-asc"&&p.costForTwo}₹{roundedPerPerson(p.costForTwo)}{:else if p.distanceKm}{p.distanceKm}<small>km</small>{:else}—{/if}</span><div class="main"><h3>{@render nm(p.name)}</h3><p>{p.description}</p></div>{@render meta(p)}</li>{/each}</ol>
 <button class="more" onclick={()=>showAllBucket=!showAllBucket}>{showAllBucket?"Show fewer ↑":"View all "+bucket.length+" →"}</button></section>
-<section id="cover">{#each cover as p}<article class="cover"><span class="glyph">₹</span><div><span class="kicker">The fine print · Need cover charge</span><h3>{p.name}</h3><p>{p.description}</p>{@render meta(p)}<p class="note">“{p.note}”</p></div></article>{/each}</section>
+<section id="cover"><div class="head"><div><span class="kicker">03 — Cover charge</span><h2>The fine print.</h2></div><div class="tools"><p>Places that asked for a cover charge</p></div></div>
+<ol class="list cover">{#each cover as p}<li><span class="num glyph">₹</span><div class="main"><h3>{p.name}</h3><p>{p.description}</p><p class="note">“{p.note}”</p></div>{@render meta(p)}</li>{/each}</ol></section>
 </main><footer class="wrap"><span>BLR / 2026</span><span>Eat · Shoot · Rank · Repeat</span></footer>
