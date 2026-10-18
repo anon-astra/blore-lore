@@ -56,10 +56,10 @@ const pricing={
     "source": "https://www.swiggy.com/restaurants/bangalore/hoodi/brix-and-barrells-1196872/dineout",
     "checkedAt": "2026-10-06"
   },
-  "Legends Microbrewery": {
+  "Legends Brewery — Varthur Road": {
     "costForTwo": 3000,
     "source": "https://www.swiggy.com/restaurants/bangalore/varthur/legends-microbrewery-1403465/dineout",
-    "checkedAt": "2026-10-06"
+    "checkedAt": "2026-10-18"
   },
   "The Azulian House": {
     "costForTwo": 5000,
@@ -178,7 +178,6 @@ const distanceFromTreePark={
   "Beige Bangalore": {"distanceKm": 11, "driveMin": 10},
   "Brix and Barrells": {"distanceKm": 5.8, "driveMin": 8},
   "URU (Kaavu) — Whitefield": {"distanceKm": 4.6, "driveMin": 10},
-  "Legends Microbrewery": {"distanceKm": 9, "driveMin": 7},
   "The Azulian House": {"distanceKm": 16, "driveMin": 19},
   "Nusa — Tropical Brewvilla": {"distanceKm": 10, "driveMin": 10},
   "Helen & Lorena's Place": {"distanceKm": 14, "driveMin": 22},
@@ -200,7 +199,8 @@ const distanceFromTreePark={
   "Oia Bangalore": {"distanceKm": 26, "driveMin": 36},
   "Pangeo": {"distanceKm": 21, "driveMin": 21},
   "KayKoy Bangalore": {"distanceKm": 19},
-  "Chins — Lavelle Road": {"distanceKm": 22}
+  "Chins — Lavelle Road": {"distanceKm": 22},
+  "Legends Brewery — Varthur Road": {"distanceKm": 9}
 };
 const withPrice=(place)=>({...place,...pricing[place.name],...distanceFromTreePark[place.name]});
 const byName=(a,b)=>a.name.localeCompare(b.name,'en',{sensitivity:'base'});
@@ -208,6 +208,7 @@ const byPrice=(a,b)=>(a.costForTwo??Infinity)-(b.costForTwo??Infinity)||byName(a
 const byDistance=(a,b)=>(a.distanceKm??Infinity)-(b.distanceKm??Infinity)||byName(a,b);
 const byRank=(a,b)=>(a.rank??Infinity)-(b.rank??Infinity);
 const visited=[
+['Legends Brewery — Varthur Road','Stadium-style brewery with seats rising around a huge hall, a sliding roof, live sax and bartender flair.'],
 ['Roxie & Barry','Italian-led restaurant and bar with European plates, cocktails and a polished Whitefield setting.'],
 ['Chifa — Marathahalli',"Rooftop restaurant and bar at King's Cross, Marathahalli, serving Peruvian, Latin American and Cantonese cuisine."],
 ['Chins — Lavelle Road',"Chin Lung's newest chapter: a bar, coffee and kitchen spread over three levels on Lavelle Road, with an outdoor café."],
@@ -224,7 +225,6 @@ const bucket=[
 ['Beige Bangalore','Rooftop pub and lounge known for its stylish lighting, cocktails and live entertainment.'],
 ['Brix and Barrells','Mahadevapura brewpub with craft beer, live music and a casual group-friendly vibe.'],
 ['URU (Kaavu) — Whitefield','A green, design-forward dining concept built for laid-back food and drink sessions.'],
-['Legends Microbrewery','Microbrewery destination centred on fresh beer, pub food and a lively evening atmosphere.'],
 ['The Azulian House','Design-led Bengaluru dining destination with an atmospheric, occasion-worthy setting.'],
 ['Nusa — Tropical Brewvilla','Balinese-inspired tropical brewscape with craft beer, global plates, live music and lush visuals.'],
 ["Helen & Lorena's Place",'Sarjapur Road brew-and-dine destination with a spacious setting for food, drinks and groups.'],
